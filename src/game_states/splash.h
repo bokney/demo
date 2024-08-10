@@ -10,4 +10,4 @@ extern splashData splash;
 
 void splash_init(void *data);
 uint8_t splash_iter(void *data);
-void splash_exit(void *data);
+uint8_t splash_exit(void *data);
