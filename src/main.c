@@ -1,23 +1,22 @@
 
 #include <gb/gb.h>
-#include "stateManager.h"
-#include "demoStates.h"
+// #include "stateManager.h"
+// #include "game_states/splash.h"
+// #include "game_states/main_menu.h"
+#include "states.h"
 
 void main(void) {
-    
-    state s;
-    s.init = splash_init;
-    s.iter = splash_iter;
-    s.exit = splash_exit;
-    s.data = &splash;
+
+    init_splashState();
+    init_mainMenuState();
 
     stateManager sm;
+    sm.state = &mainMenuState;
     sm.step = 0;
-    sm.state = &s;
 
     for (;;) {
         stateManagerRun(&sm);
-        delay(80);
+        delay(512);
     }
     
 }
