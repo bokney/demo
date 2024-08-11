@@ -1,12 +1,9 @@
 
 #include <gb/gb.h>
 
-typedef struct _mainMenuData {
-    char *text;
-    uint8_t count;
-} mainMenuData;
+typedef struct _mainMenuData mainMenuData;
 
-extern mainMenuData mainMenu;
+extern mainMenuData main_menu_data;
 
 void main_menu_init(void *data);
 uint8_t main_menu_iter(void *data);

@@ -13,7 +13,7 @@ state *init_splashState(void) {
     splashState.init = splash_init;
     splashState.iter = splash_iter;
     splashState.exit = splash_exit;
-    splashState.data = &splash;
+    splashState.data = &splash_data;
     return &splashState;
 }
 
@@ -22,6 +22,6 @@ state *init_mainMenuState(void) {
     mainMenuState.init = main_menu_init;
     mainMenuState.iter = main_menu_iter;
     mainMenuState.exit = main_menu_exit;
-    mainMenuState.data = &mainMenu;
+    mainMenuState.data = &main_menu_data;
     return &mainMenuState;
 }

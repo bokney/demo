@@ -1,12 +1,9 @@
 
 #include <gb/gb.h>
 
-typedef struct _splashData {
-    char *text;
-    uint8_t count;
-} splashData;
+typedef struct _splashData splashData;
 
-extern splashData splash;
+extern splashData splash_data;
 
 void splash_init(void *data);
 uint8_t splash_iter(void *data);
