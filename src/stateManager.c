@@ -1,29 +1,18 @@
 #include <gb/gb.h>
 #include <gb/crash_handler.h>
-// #include "stateManager.h"
-#include "states.h"
+#include "game_states.h"
 
-void stateManagerRun(stateManager *target) {
+uint8_t runState(state *target) {
     switch (target->step){
         case 0:
-            target->state->init(target->state->data);
+            target->init(target->data);
             target->step = 1;
         case 1:
-            if (!target->state->iter(target->state->data)) break;
+            if (!target->iter(target->data)) break;
             target->step = 2;
         case 2:
-            uint8_t next_state = target->state->exit(target->state->data);
             target->step = 0;
-            switch (next_state) {
-                case 0:
-                    target->state = &splashState;
-                    break;
-                case 1:
-                    target->state = &mainMenuState;
-                    break;
-                default:
-                    __HandleCrash();
-            }
-            break;
-    } 
+            return target->exit(target->data);
+    }
+    return 0;
 }
