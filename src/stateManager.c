@@ -8,11 +8,14 @@ uint8_t runState(state *target) {
             target->init(target->data);
             target->step = 1;
         case 1:
-            if (!target->iter(target->data)) break;
+            if (!target->iter(target->data)) 
+                break;
             target->step = 2;
         case 2:
             target->step = 0;
             return target->exit(target->data);
+        default:
+            __HandleCrash();
     }
     return 0;
 }
