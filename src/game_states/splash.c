@@ -26,6 +26,6 @@ uint8_t splash_iter(void *data) {
 
 uint8_t splash_exit(void *data) {
     printf("splash_exit\n");
-    return 1;
+    return 2;
 }
 
