@@ -5,7 +5,7 @@ uint8_t fadeStage;
 
 void fade_out(void) {
     fadeStage = 0;
-    while(1) {
+    while (1) {
         switch(fadeStage) {
             case 0: BGP_REG = 0xE4; break;
             case 1: BGP_REG = 0x90; break;
@@ -21,7 +21,7 @@ void fade_out(void) {
 
 void fade_in(void) {
     fadeStage = 0;
-    while(1) {
+    while (1) {
         switch(fadeStage) {
             case 0: BGP_REG = 0x00; break;
             case 1: BGP_REG = 0x40; break;
