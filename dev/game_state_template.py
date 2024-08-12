@@ -8,25 +8,15 @@ if len(sys.argv) <= 1:
 
 args = sys.argv[1:]
 
-print(f"arguments: {args}")
-
 for arg in args:
 
     words = arg.lower().split()
 
-    print(words)
-
     snake_case = "_".join(words)
-
-    print(snake_case)
 
     camel_case = "".join(x.capitalize() for x in snake_case.lower().split("_"))
 
-    print(camel_case)
-
     lower_camel_case = camel_case[0].lower() + camel_case[1:]
-
-    print(lower_camel_case)
 
     c_contents = f"""
 #include <gb/gb.h>
@@ -71,10 +61,9 @@ uint8_t {snake_case}_exit(void *data);
 """
     
     with open(file = f"{snake_case}.c", mode = "w") as f:
-        print(f"writing {snake_case}")
         f.write(c_contents)
+        print(f"created {snake_case}.c")
 
     with open(file = f"{snake_case}.h", mode = "w") as f:
-        print(f"writing {snake_case}")
         f.write(h_contents)
-
+        print(f"created {snake_case}.h")
