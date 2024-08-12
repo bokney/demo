@@ -3,7 +3,7 @@
 #include "game_states.h"
 
 uint8_t runState(state *target) {
-    switch (target->step){
+    switch (target->step) {
         case 0:
             target->init(target->data);
             target->step = 1;
