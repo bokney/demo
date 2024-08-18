@@ -15,3 +15,4 @@ all:
 
 clean:
 	rm -rf ./*.asm ./*.ihx ./*.lst ./*.o ./*.sym
+	
