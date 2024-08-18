@@ -1,12 +1,21 @@
 
 import sys
 
-
 if len(sys.argv) <= 1:
     print("Expected 1 argument or more state names as arguments")
     exit()
 
 args = sys.argv[1:]
+
+words = [s.lower().split() for s in args]
+print(words)
+snake_case_list = ["_".join(i) for i in words]
+camel_case_list = ["".join(x.capitalize() for x in i.lower().split("_")) for i in snake_case_list]
+lower_camel_case_list = [i[0].lower() + i[1:] for i in camel_case_list]
+
+print(snake_case_list)
+print(camel_case_list)
+print(lower_camel_case_list)
 
 for arg in args:
 
@@ -59,7 +68,7 @@ void {snake_case}_init(void *data);
 uint8_t {snake_case}_iter(void *data);
 uint8_t {snake_case}_exit(void *data);
 """
-    
+ 
     with open(file = f"{snake_case}.c", mode = "w") as f:
         f.write(c_contents)
         print(f"created {snake_case}.c")
@@ -67,3 +76,29 @@ uint8_t {snake_case}_exit(void *data);
     with open(file = f"{snake_case}.h", mode = "w") as f:
         f.write(h_contents)
         print(f"created {snake_case}.h")
+
+game_state_c = f"""
+#include <gb/gb.h>
+#include "game_states.h"
+#include "game_states/splash.h"
+#include "game_states/main_menu.h"
+
+state"""
+# + f"{["\n\t" + i + "," for i in snake_case_list]}"
+# + "\b;\n\n"
++ f"{"state *init_(void)"}"
+    # {[s + ",\n\t" for s in snake_case_list]}\b\;
+
+# state *init_splashState(void) {
+#     # splashState.step = 0;
+#     # splashState.init = 
+# }
+
+
+with open(file = "game_states.c", mode = "w") as f:
+    f.write(c_contents)
+    print("created game_states.c")
+
+with open(file = "game_states.h", mode = "w") as f:
+    f.write(h_contents)
+    print("created game_states.h")
