@@ -2,6 +2,7 @@
 #include <gb/gb.h>
 #include <stdio.h>
 #include "main_menu.h"
+#include "../fade.h"
 
 typedef struct _mainMenuData {
     char *text;
@@ -15,9 +16,10 @@ void main_menu_init(void *data) {
     mainMenuData *data_ptr = data;
     data_ptr->text = "MAIN MENU TIME!!\n";
     data_ptr->count = 0;
+    fade_in();
 }
 
-uint8_t main_menu_iter(void *data) {
+uint8_t main_menu_iter(void *data) {    
     printf("main_menu_iter\n");
     mainMenuData *data_ptr = data;
     printf(data_ptr->text);
