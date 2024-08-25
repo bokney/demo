@@ -28,12 +28,10 @@ for arg in args:
     lower_camel_case = camel_case[0].lower() + camel_case[1:]
 
     c_contents = f"""
-#include <gb/gb.h>
-#include <stdio.h>
 #include "{snake_case}.h"
 #include "../fade.h"
 
-typedef struct _{lower_camel_case} {{
+typedef struct _{lower_camel_case}Data {{
     uint8_t count;
 }} {lower_camel_case}Data;
 
@@ -77,17 +75,57 @@ uint8_t {snake_case}_exit(void *data);
         f.write(h_contents)
         print(f"created {snake_case}.h")
 
+define_states = ""
+for i in range(len(lower_camel_case_list) - 1):
+    define_states += f"\t{lower_camel_case_list[i]}State,\n"
+define_states += f"\t{lower_camel_case_list[-1]}State;\n"
+
+init_states = ""
+for i in range(len(lower_camel_case_list)):
+    init_states += f"""
+state *init_{lower_camel_case_list[i]}State(void) {{
+    {lower_camel_case_list[i]}State.step = 0;
+    {lower_camel_case_list[i]}State.init = {snake_case_list[i]}_init;
+    {lower_camel_case_list[i]}State.iter = {snake_case_list[i]}_iter;
+    {lower_camel_case_list[i]}State.exit = {snake_case_list[i]}_exit;
+    {lower_camel_case_list[i]}State.data = &{snake_case_list[i]}_data;
+    return &{lower_camel_case_list[i]}State;
+}}
+"""
+
+game_state_includes = ""
+for i in range(len(snake_case_list)):
+    game_state_includes += f'#include "game_states/{snake_case_list[i]}.h"\n'
+
 game_state_c = f"""
 #include <gb/gb.h>
 #include "game_states.h"
-#include "game_states/splash.h"
-#include "game_states/main_menu.h"
+"""
+game_state_c += game_state_includes
+game_state_c += """
 
-state"""
+state
+"""
+game_state_c += define_states
+game_state_c += init_states
+
+extern_states = ""
+declare_states = ""
+for i in range(len(lower_camel_case_list)):
+    extern_states += f"extern state {lower_camel_case_list[i]}State;\n"
+    declare_states += f"state *init_{lower_camel_case_list[i]}State(void);\n"
+
+game_state_h = """
+#include "stateManager.h"
+
+"""
+game_state_h += extern_states
+game_state_h += "\n"
+game_state_h += declare_states
 # + f"{["\n\t" + i + "," for i in snake_case_list]}"
 # + "\b;\n\n"
-+ f"{"state *init_(void)"}"
-    # {[s + ",\n\t" for s in snake_case_list]}\b\;
+# + f"{"state *init_(void)"}"
+#     {[s + ",\n\t" for s in snake_case_list]}\b\;
 
 # state *init_splashState(void) {
 #     # splashState.step = 0;
@@ -96,9 +134,42 @@ state"""
 
 
 with open(file = "game_states.c", mode = "w") as f:
-    f.write(c_contents)
+    f.write(game_state_c)
     print("created game_states.c")
 
 with open(file = "game_states.h", mode = "w") as f:
-    f.write(h_contents)
+    f.write(game_state_h)
     print("created game_states.h")
+
+main_c = """
+#include <gb/gb.h>
+#include <gb/crash_handler.h>
+#include "game_states.h"
+
+void main(void) {
+
+"""
+
+invoke_inits = ""
+for i in range(len(lower_camel_case_list)):
+    invoke_inits += f"\tinit_{lower_camel_case_list[i]}State();\n"
+
+main_c += invoke_inits
+main_c += f"""
+    state *currentState = &{lower_camel_case_list[0]}State;
+    
+    for (;;) {{
+        switch (runState(currentState)) {{
+            case 0:
+                break;
+"""
+
+cases = ""
+for i in range(len(lower_camel_case_list)):
+    cases += f"\t\t\tcase {i + 1}:\n\t\t\t\tcurrentState = &{lower_camel_case_list[i]}State;\n\t\t\t\tbreak;\n"
+main_c += cases
+main_c += "\t\t\tdefault:\n\t\t\t\t__HandleCrash();\n\t\t}\n\t}\n}\n"
+
+with open(file = "main.c", mode = "w") as f:
+    f.write(main_c)
+    print("created main.c")
