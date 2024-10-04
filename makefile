@@ -1,20 +1,23 @@
 
 CC = /opt/gbdk/bin/lcc
-CFLAGS = #-Wa-l -Wl-m -Wl-j
-MFLAGS = #-Wl-yt1 -Wl-yo4 -Wl-ya0
 
-all: build open clean
+all: compile assemble link open clean
 
-build:
-	$(CC) $(CFLAGS) -c -o fade.o src/fade.c
-	$(CC) $(CFLAGS) -c -o splash.o src/game_states/splash.c
-	$(CC) $(CFLAGS) -c -o main_menu.o src/game_states/main_menu.c
-	$(CC) $(CFLAGS) -c -o page_01.o src/game_states/page_01.c
-	$(CC) $(CFLAGS) -c -o page_02.o src/game_states/page_02.c
-	$(CC) $(CFLAGS) -c -o page_03.o src/game_states/page_03.c
-	$(CC) $(CFLAGS) -c -o state_manager.o src/state_manager.c
-	$(CC) $(CFLAGS) -c -o game_states.o src/game_states.c
-	$(CC) $(CFLAGS) -c -o main.o src/main.c
+compile:
+	$(CC) -S src/fade.c
+	$(CC) -S src/game_states/splash.c
+	$(CC) -S src/game_states/main_menu.c
+	$(CC) -S src/game_states/page_01.c
+	$(CC) -S src/game_states/page_02.c
+	$(CC) -S src/game_states/page_03.c
+	$(CC) -S src/state_manager.c
+	$(CC) -S src/game_states.c
+	$(CC) -S src/main.c
+
+assemble:
+	$(CC) -c fade.asm splash.asm main_menu.asm page_01.asm page_02.asm page_03.asm state_manager.asm game_states.asm main.asm
+
+link:
 	$(CC) $(MFLAGS) -o output.gb main.o game_states.o state_manager.o page_03.o page_02.o page_01.o main_menu.o splash.o fade.o
 
 open:
