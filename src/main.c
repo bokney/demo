@@ -14,7 +14,6 @@ void main(void) {
     for (;;) {
         switch (runState(&currentState)) {
             case 0:
-                __HandleCrash();
                 break;
             case 1:
                 assign_splash(&currentState);
