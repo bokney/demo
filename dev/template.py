@@ -18,16 +18,6 @@ if len(sys.argv) <= 1:
     print("Expected 1 or more arguments")
     exit()
 
-# class State(BaseModel):
-#     name: str
-#     values: str
-#     init_contents: str
-#     iter_contents: str
-#     exit_contents: str
-
-# class Model(BaseModel):
-#     states: list[State]
-
 class File(BaseModel):
     filename: str
     content: str
@@ -247,7 +237,7 @@ for s in state_source:
 
 with open(file = f"output/{states_source.filename}", mode = "w") as f:
     f.write(states_source.content)
-
+ 
 with open(file = f"output/{states_header.filename}", mode = "w") as f:
     f.write(states_header.content)
 
