@@ -17,5 +17,5 @@ uint8_t splash_iter(void) {
 }
 
 uint8_t splash_exit(void) {
-    return 0;
+    return 1;
 }

@@ -17,5 +17,5 @@ uint8_t page_02_iter(void) {
 }
 
 uint8_t page_02_exit(void) {
-    return 0;
+    return 2; // main menu
 }
