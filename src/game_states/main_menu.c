@@ -1,30 +1,21 @@
 
-#include <gb/gb.h>
-#include <stdio.h>
 #include "main_menu.h"
 
-mainMenuData mainMenu;
+typedef struct _mainMenuData {
+    uint8_t count;
+} mainMenuData;
 
-void main_menu_init(void *data) {
-    printf("main_menu_init\n");
-    mainMenuData *mmd = data;
-    mmd->text = "MAIN MENU TIME!!\n";
-    mmd->count = 0;
+mainMenuData main_menu_data;
+
+void main_menu_init(void) {
+    main_menu_data.count = 0;
 }
 
-uint8_t main_menu_iter(void *data) {
-    printf("main_menu_iter\n");
-    mainMenuData *mmd = data;
-    printf(mmd->text);
-    printf("Count: %u\n", mmd->count);
-    mmd->count += 1;
-    if (mmd->count > 4) {
-        return 1;
-    }
+uint8_t main_menu_iter(void) {
+    main_menu_data.count += 1;
     return 0;
 }
 
-uint8_t main_menu_exit(void *data) {
-    printf("main_menu_exit\n");
-    return 1;
+uint8_t main_menu_exit(void) {
+    return 0;
 }

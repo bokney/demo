@@ -1,8 +1,8 @@
 
-#include "stateManager.h"
+#include "state_manager.h"
 
-extern state splashState;
-extern state mainMenuState;
-
-state *init_splashState(void);
-state *init_mainMenuState(void);
+void assign_splash(state *state);
+void assign_main_menu(state *state);
+void assign_page_01(state *state);
+void assign_page_02(state *state);
+void assign_page_03(state *state);

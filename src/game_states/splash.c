@@ -1,31 +1,24 @@
 
-#include <gb/gb.h>
 #include <stdio.h>
 #include "splash.h"
 
-splashData splash;
+typedef struct _splashData {
+    uint8_t count;
+} splashData;
 
-void splash_init(void *data) {
-    printf("splash_init\n");
-    splashData *sd = data;
-    sd->text = "Hello from splashData!!\n";
-    sd->count = 0;
+splashData splash_data;
+
+void splash_init(void) {
+    splash_data.count = 0;
+    printf("hello!\n");
 }
 
-uint8_t splash_iter(void *data) {
-    printf("splash_iter\n");
-    splashData *sd = data;
-    printf(sd->text);
-    printf("Count: %u\n", sd->count);
-    sd->count += 1;
-    if (sd->count > 4) {
-        return 1;
-    }
+uint8_t splash_iter(void) {
+    splash_data.count += 1;
     return 0;
 }
 
-uint8_t splash_exit(void *data) {
-    printf("splash_exit\n");
-    return 2;
+uint8_t splash_exit(void) {
+    printf("goodbye!\n");
+    return 1;
 }
-

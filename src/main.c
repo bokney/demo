@@ -3,27 +3,40 @@
 #include <gb/crash_handler.h>
 #include "game_states.h"
 
+uint16_t global_counter = 0;
+
 void main(void) {
 
-    init_splashState();
-    init_mainMenuState();
-
-    state *currentState = &splashState;
+    state currentState;
+    currentState.step = 0;
+    
+    assign_splash(&currentState);
 
     for (;;) {
-        switch (runState(currentState)) {
+        switch (runState(&currentState)) {
             case 0:
                 break;
             case 1:
-                currentState = &splashState;
+                assign_splash(&currentState);
                 break;
             case 2:
-                currentState = &mainMenuState;
+                assign_main_menu(&currentState);
+                break;
+            case 3:
+                assign_page_01(&currentState);
+                break;
+            case 4:
+                assign_page_02(&currentState);
+                break;
+            case 5:
+                assign_page_03(&currentState);
                 break;
             default:
-                __HandleCrash();
+                // __HandleCrash();
+                break;
         }
-        delay(640);
+        global_counter++;
+        wait_vbl_done();
     }
-    
 }
+
