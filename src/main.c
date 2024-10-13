@@ -9,7 +9,6 @@ void main(void) {
 
     state currentState;
     currentState.step = 0;
-    
     assign_splash(&currentState);
 
     for (;;) {
@@ -32,7 +31,7 @@ void main(void) {
                 assign_page_03(&currentState);
                 break;
             default:
-                // __HandleCrash();
+                __HandleCrash();
                 break;
         }
         global_counter++;
