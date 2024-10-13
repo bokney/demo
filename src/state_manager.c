@@ -11,15 +11,13 @@ uint8_t runState(state *target) {
         case 1:
             if (target->iter)
                 if (!target->iter())
-                    break;
+                    return 0;
         case 2:
             target->step = 0;
             if (target->exit)
                 return target->exit();
-            else
-                return 0;
+            return 0;
         default:
             __HandleCrash();
     }
-    return 0;
 }
