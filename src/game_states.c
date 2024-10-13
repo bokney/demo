@@ -9,7 +9,8 @@
 
 void assign_splash(state *state) {
     state->init = &splash_init;
-    state->iter = &splash_iter;
+    // state->iter = &splash_iter;
+    state->iter = NULL;
     state->exit = &splash_exit;
 }
 

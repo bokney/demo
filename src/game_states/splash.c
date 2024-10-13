@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 #include "splash.h"
 
 typedef struct _splashData {
@@ -9,6 +10,7 @@ splashData splash_data;
 
 void splash_init(void) {
     splash_data.count = 0;
+    printf("hello!\n");
 }
 
 uint8_t splash_iter(void) {
@@ -17,5 +19,6 @@ uint8_t splash_iter(void) {
 }
 
 uint8_t splash_exit(void) {
+    printf("goodbye!\n");
     return 1;
 }

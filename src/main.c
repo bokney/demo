@@ -3,12 +3,13 @@
 #include <gb/crash_handler.h>
 #include "game_states.h"
 
-state currentState;
-
 uint16_t global_counter = 0;
 
 void main(void) {
 
+    state currentState;
+    currentState.step = 0;
+    
     assign_splash(&currentState);
 
     for (;;) {
@@ -31,7 +32,7 @@ void main(void) {
                 assign_page_03(&currentState);
                 break;
             default:
-                __HandleCrash();
+                // __HandleCrash();
                 break;
         }
         global_counter++;
