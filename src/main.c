@@ -3,7 +3,7 @@
 #include <gb/crash_handler.h>
 #include "game_states.h"
 
-uint16_t global_counter = 0;
+uint32_t global_counter = 0;
 
 void main(void) {
 
