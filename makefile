@@ -3,39 +3,39 @@ UNITY_REPO = https://github.com/ThrowTheSwitch/Unity
 UNITY_DIR = lib/Unity
 UNITY_SRC = $(UNITY_DIR)/src
 UNITY_FIXTURE = $(UNITY_DIR)/extras/fixture
+UNITY_EXISTS = $(shell [ -d $(UNITY_DIR) ] && echo 1)
 
 GBDK_TAR = https://github.com/gbdk-2020/gbdk-2020/releases/download/4.3.0/gbdk-macos.tar.gz
 GBDK_DIR = lib/gbdk
+GBDK_EXISTS = $(shell [ -d $(GBDK_DIR) ] && echo 1)
 
 GCC = gcc
 LCC = $(GBDK_DIR)/bin/lcc
 
-TEST_SRC = test/test_state_manager.c
+TEST_SRC = test/test_state_manager.c src/state_manager.c
 TEST_RUNNER = test_runner
 
-UNITY_EXISTS = $(shell [ -d $(UNITY_DIR) ] && echo 1)
-GBDK_EXISTS = $(shell [ -d $(GBDK_DIR) ] && echo 1)
+SAMEBOY_DIR = /Applications/SameBoy.app
+SAMEBOY_EXISTS = $(shell [ -d $(SAMEBOY_DIR) ] && echo 1)
 
 all: clone_unity download_gbdk run_tests compile assemble link open clean
 
-ifeq ($(UNITY_EXISTS),)
 clone_unity:
+ifeq ($(UNITY_EXISTS),)
 	@echo "Cloning Unity..."
 	git clone $(UNITY_REPO) $(UNITY_DIR)
 else
-clone_unity:
 	@echo "Unity already exists!"
 endif
 
-ifeq ($(GBDK_EXISTS),)
 download_gbdk:
+ifeq ($(GBDK_EXISTS),)
 	@echo "Downloading GBDK-2020..."
 	curl -L $(GBDK_TAR) -o gbdk.tar.gz
 	@echo "Extracting GBDK-2020..."
 	tar -xzf gbdk.tar.gz -C lib
 	rm gbdk.tar.gz
 else
-download_gbdk:
 	@echo "GBDK-2020 already exists!"
 endif
 
@@ -61,8 +61,10 @@ assemble: compile
 link: assemble
 	$(LCC) $(MFLAGS) -o output.gb main.o game_states.o state_manager.o page_03.o page_02.o page_01.o main_menu.o splash.o fade.o
 
-open: link
-	open -a /Applications/SameBoy.app output.gb
+open:
+ifeq ($(SAMEBOY_EXISTS),1)
+	open -a $(SAMEBOY_DIR) output.gb
+endif
 
 clean:
 	rm -rf ./*.asm ./*.ihx ./*.lst ./*.o ./*.s2 ./*.sym $(TEST_RUNNER)
