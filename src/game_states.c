@@ -1,5 +1,10 @@
 
+#ifdef TEST
+#include "mock_gb.h"
+#else
 #include <gb/gb.h>
+#endif
+
 #include "game_states.h"
 #include "game_states/splash.h"
 #include "game_states/main_menu.h"

@@ -1,6 +1,6 @@
 
 #ifdef TEST
-#include "mock_crash_handler.c"
+#include "mock_crash_handler.h"
 #else
 #include <gb/crash_handler.h>
 #endif

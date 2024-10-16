@@ -1,5 +1,9 @@
 
+#ifdef TEST
+#include "mock_gb.h"
+#else
 #include <gb/gb.h>
+#endif
 
 uint8_t fadeStage;
 

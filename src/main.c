@@ -1,11 +1,15 @@
 
-#include <gb/gb.h>
+#ifdef TEST
+#include "mock_crash_handler.h"
+#else
 #include <gb/crash_handler.h>
+#endif
+
 #include "game_states.h"
 
 uint32_t global_counter = 0;
 
-void main(void) {
+int main(void) {
 
     state currentState;
     currentState.step = 0;
@@ -38,4 +42,3 @@ void main(void) {
         wait_vbl_done();
     }
 }
-
