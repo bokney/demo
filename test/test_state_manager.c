@@ -18,6 +18,7 @@ void tearDown(void) {
     - init and first iter trigger same invocation of runStep
     - last iter and exit trigger same invocation of runStep
     - correct amount of iter iterations
+    - handover to next state
 */
 
 void test_init(void) {
