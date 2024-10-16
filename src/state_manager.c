@@ -21,8 +21,8 @@ uint8_t runState(state *target) {
             target->step = 0;
             if (target->exit)
                 return target->exit();
-            return 0;
         default:
             __HandleCrash();
     }
+    return 0;
 }
