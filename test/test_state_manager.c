@@ -18,7 +18,10 @@ void test_addition(void) {
     TEST_ASSERT_EQUAL(5, add(2, 3));
 }
 
-// void test_
+void test_a(void) {
+    state test_state;
+    test_state.step = 0;
+}
 
 int main(void) {
     UNITY_BEGIN();
