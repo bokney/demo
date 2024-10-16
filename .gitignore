@@ -2,9 +2,11 @@
 *.ihx
 *.lst
 *.o
+*.s2
 *.sym
 *.gb
 *.gbc
+
 .vscode/
 test_runner
-/Unity/
+lib/
