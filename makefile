@@ -12,7 +12,11 @@ GBDK_EXISTS = $(shell [ -d $(GBDK_DIR) ] && echo 1)
 GCC = gcc
 LCC = $(GBDK_DIR)/bin/lcc
 
-TEST_SRC = test/test_state_manager.c src/state_manager.c
+C_SRC = $(shell find src -name "*.c")
+ASM_SRC = $(wildcard *.asm)
+OBJ_FILES = $(wildcard *.o)
+
+TEST_SRC = $(wildcard test/*.c) $(filter-out src/main.c, $(C_SRC))
 TEST_RUNNER = test_runner
 
 SAMEBOY_DIR = /Applications/SameBoy.app
@@ -26,6 +30,8 @@ ifeq ($(UNITY_EXISTS),)
 	git clone $(UNITY_REPO) $(UNITY_DIR)
 else
 	@echo "Unity already exists!"
+	echo $(TEST_SRC)
+	echo $(C_SRC)
 endif
 
 download_gbdk:
@@ -45,21 +51,13 @@ run_tests:
 	./$(TEST_RUNNER)
 
 compile: run_tests
-	$(LCC) -S src/fade.c
-	$(LCC) -S src/game_states/splash.c
-	$(LCC) -S src/game_states/main_menu.c
-	$(LCC) -S src/game_states/page_01.c
-	$(LCC) -S src/game_states/page_02.c
-	$(LCC) -S src/game_states/page_03.c
-	$(LCC) -S src/state_manager.c
-	$(LCC) -S src/game_states.c
-	$(LCC) -S src/main.c
+	$(LCC) -S $(C_SRC)
 
 assemble: compile
-	$(LCC) -c fade.asm splash.asm main_menu.asm page_01.asm page_02.asm page_03.asm state_manager.asm game_states.asm main.asm
+	$(LCC) -c $(ASM_SRC)
 
 link: assemble
-	$(LCC) $(MFLAGS) -o output.gb main.o game_states.o state_manager.o page_03.o page_02.o page_01.o main_menu.o splash.o fade.o
+	$(LCC) -o output.gb $(OBJ_FILES)
 
 open:
 ifeq ($(SAMEBOY_EXISTS),1)
