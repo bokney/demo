@@ -6,3 +6,4 @@
 *.gb
 *.gbc
 .vscode/
+test_runner
