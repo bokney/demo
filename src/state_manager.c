@@ -1,5 +1,10 @@
 
+#ifdef TEST
+#include "mock_crash_handler.c"
+#else
 #include <gb/crash_handler.h>
+#endif
+
 #include "state_manager.h"
 
 uint8_t runState(state *target) {
