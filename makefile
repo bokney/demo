@@ -30,10 +30,10 @@ endif
 ifeq ($(GBDK_EXISTS),)
 download_gbdk:
 	@echo "Downloading GBDK-2020..."
-	curl -L $(GBDK_TAR) -o data/gbdk.tar.gz
+	curl -L $(GBDK_TAR) -o gbdk.tar.gz
 	@echo "Extracting GBDK-2020..."
-	tar -xzf data/gbdk.tar.gz -C lib
-	rm data/gbdk.tar.gz
+	tar -xzf gbdk.tar.gz -C lib
+	rm gbdk.tar.gz
 else
 download_gbdk:
 	@echo "GBDK-2020 already exists!"
