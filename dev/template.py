@@ -200,7 +200,7 @@ void runner_init(void) {{
 
 runner_source_iter = f"""
 uint8_t runner_iter(void) {{
-    switch (runState(&currentState)) {{
+    switch (run(&currentState)) {{
         case 0:
             break;"""
 
