@@ -12,12 +12,12 @@ void tearDown(void) {
 
 }
 
-void test_init(void) {
+void init_func(void) {
     test_counter_a = 4;
     test_counter_b = 0;
 }
 
-uint8_t test_iter(void) {
+uint8_t iter_func(void) {
     test_counter_a--;
     test_counter_b++;
     if (test_counter_a == 0)
@@ -25,17 +25,39 @@ uint8_t test_iter(void) {
     return 0;
 }
 
-uint8_t test_exit(void) {
+uint8_t exit_func(void) {
     return 10;
+}
+
+void test_assign(void) {
+    obj test_obj;
+    test_obj.state = 10;
+    test_obj.init = NULL;
+    test_obj.step = NULL;
+    test_obj.exit = NULL;
+    TEST_ASSERT_EQUAL(test_obj.state, 10);
+    TEST_ASSERT_EQUAL(test_obj.init, NULL);
+    TEST_ASSERT_EQUAL(test_obj.step, NULL);
+    TEST_ASSERT_EQUAL(test_obj.exit, NULL);
+    assign(
+        &test_obj,
+        &init_func,
+        &iter_func,
+        &exit_func
+    );
+    TEST_ASSERT_EQUAL(test_obj.state, 0);
+    TEST_ASSERT_EQUAL(test_obj.init, &init_func);
+    TEST_ASSERT_EQUAL(test_obj.step, &iter_func);
+    TEST_ASSERT_EQUAL(test_obj.exit, &exit_func);
 }
 
 void test_basic_functionality(void) {
     obj test_obj;
     assign(
         &test_obj,
-        &test_init,
-        &test_iter,
-        &test_exit
+        &init_func,
+        &iter_func,
+        &exit_func
     );
     test_counter_a = 255;
     test_counter_b = 255;
@@ -67,8 +89,8 @@ void test_null_init(void) {
     assign(
         &test_obj,
         NULL,
-        &test_iter,
-        &test_exit
+        &iter_func,
+        &exit_func
     );
     test_counter_a = 6;
     test_counter_b = 3;
@@ -83,9 +105,9 @@ void test_null_iter(void) {
     obj test_obj;
     assign(
         &test_obj,
-        &test_init,
+        &init_func,
         NULL,
-        &test_exit
+        &exit_func
     );
     test_counter_a = 255;
     test_counter_b = 255;
@@ -106,8 +128,8 @@ void test_null_exit(void) {
     obj test_obj;
     assign(
         &test_obj,
-        &test_init,
-        &test_iter,
+        &init_func,
+        &iter_func,
         NULL
     );
     test_counter_a = 255;
@@ -137,6 +159,7 @@ void test_null_exit(void) {
 
 int main(void) {
     UNITY_BEGIN();
+    RUN_TEST(test_assign);
     RUN_TEST(test_basic_functionality);
     RUN_TEST(test_null_init);
     RUN_TEST(test_null_iter);
