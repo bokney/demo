@@ -42,7 +42,7 @@ states_source_individual_dependencies: list[str] = []
 states_source_individual_assign_definitions: list[str] = []
 states_header_individual_assign_declarations: list[str] = []
 
-state_manager_header_path = "state_manager.h"
+obj_header_path = "obj.h"
 
 args = sys.argv[1:]
 for i, arg in enumerate(args):
@@ -63,20 +63,27 @@ for i, arg in enumerate(args):
     states_source_individual_dependencies.append(f"#include \"states/{snake_case}.h\"\n")
     
     states_source_individual_assign_definitions.append(f"""
-void assign_{snake_case}(state *state) {{
-    state->init = &{snake_case}_init;
-    state->iter = &{snake_case}_iter;
-    state->exit = &{snake_case}_exit;
+void assign_{snake_case}(obj *target) {{
+    assign(
+        target,
+        &{snake_case}_init,
+        &{snake_case}_iter,
+        &{snake_case}_exit
+    );
 }}
 """)
     
     states_header_individual_assign_declarations.append(f"""
-void assign_{snake_case}(state *state);""")
+void assign_{snake_case}(obj *target);""")
 
     # # # #
 
     state_header_dependencies = f"""
+#ifdef TEST
+#include "mock_gb.h"
+#else
 #include <gb/gb.h>
+#endif
 """
 
     state_header_declarations = f"""
@@ -138,12 +145,17 @@ uint8_t {snake_case}_exit(void) {{
         ))
 
 states_source_common_dependencies = f"""
+#ifdef TEST
+#include "mock_gb.h"
+#else
 #include <gb/gb.h>
+#endif
+
 #include "states.h"
 """
 
 states_header_dependencies = f"""
-#include "{state_manager_header_path}"
+#include "{obj_header_path}"
 """
 
 states_source = File(
@@ -165,13 +177,19 @@ states_header = File(
     )
 
 runner_source_dependencies = f"""
+#ifdef TEST
+#include "mock_gb.h"
+#include "mock_crash_handler.h"
+#else
 #include <gb/gb.h>
 #include <gb/crash_handler.h>
+#endif
+
 #include "states.h"
 """
 
 runner_source_struct_definition = f"""
-state currentState;
+obj currentState;
 """
 
 runner_source_init = f"""
@@ -184,7 +202,6 @@ runner_source_iter = f"""
 uint8_t runner_iter(void) {{
     switch (runState(&currentState)) {{
         case 0:
-            __HandleCrash();
             break;"""
 
 for i, s in enumerate(snake_case_list):
