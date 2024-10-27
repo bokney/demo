@@ -2,8 +2,19 @@
 
 it makes a gameboy rom
 
-run:
+install dependencies:
 
 ```sh
-make
+make clone_unity
+make download_gbdk
+```
+
+run build steps individually:
+
+```sh
+make run_tests
+make compile
+make assemble
+make link
+make clean
 ```
