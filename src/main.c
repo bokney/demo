@@ -11,12 +11,11 @@ uint32_t global_counter = 0;
 
 int main(void) {
 
-    state currentState;
-    currentState.step = 0;
+    obj currentState;
     assign_splash(&currentState);
 
     for (;;) {
-        switch (runState(&currentState)) {
+        switch (run(&currentState)) {
             case 0:
                 break;
             case 1:
@@ -39,6 +38,7 @@ int main(void) {
                 break;
         }
         global_counter++;
+        delay(10);
         wait_vbl_done();
     }
 }
