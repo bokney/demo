@@ -50,13 +50,13 @@ run_tests:
 	$(GCC) -DTEST -I$(UNITY_SRC) -I$(UNITY_FIXTURE) -I./src -I./test -o $(TEST_RUNNER) $(UNITY_SRC)/unity.c $(TEST_SRC)
 	./$(TEST_RUNNER)
 
-compile: run_tests
+compile: $(C_SRC)
 	$(LCC) -S $(C_SRC)
 
-assemble: compile
+assemble: $(ASM_SRC)
 	$(LCC) -c $(ASM_SRC)
 
-link: assemble
+link: $(OBJ_FILES)
 	$(LCC) -o output.gb $(OBJ_FILES)
 
 open:
